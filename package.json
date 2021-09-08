@@ -1,0 +1,26 @@
+{
+  "name": "dom-service-backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "npm run clean && npm run build-babel", 
+    "start": "npm run build && node ./build/index.js",
+    "dev": "DEBUG=yes nodemon --ignore '*.test.js'   --exec babel-node ./src/index",
+    "build-babel": "babel -d ./build ./src -s",
+    "clean": "rm -rf build && mkdir build"
+  },
+  "author": "Miguel Alvarez",
+  "license": "ISC",
+  "dependencies": {
+    "@babel/preset-env": "^7.15.4",
+    "express": "^4.17.1",
+    "mongoose": "^6.0.5"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.15.4",
+    "@babel/core": "^7.15.5",
+    "@babel/node": "^7.15.4",
+    "nodemon": "^2.0.12"
+  }
+}
