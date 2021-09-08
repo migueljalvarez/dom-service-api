@@ -13,13 +13,13 @@
   "author": "Miguel Alvarez",
   "license": "ISC",
   "dependencies": {
+    "@babel/cli": "^7.15.4",
+    "@babel/core": "^7.15.5",
     "@babel/preset-env": "^7.15.4",
     "express": "^4.17.1",
     "mongoose": "^6.0.5"
   },
   "devDependencies": {
-    "@babel/cli": "^7.15.4",
-    "@babel/core": "^7.15.5",
     "@babel/node": "^7.15.4",
     "nodemon": "^2.0.12"
   }
