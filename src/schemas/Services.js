@@ -3,6 +3,7 @@ import mongoDelete from "mongoose-delete";
 import mongoosePaginate from "mongoose-paginate-v2";
 import generatePaths from "./helpers/generateSchemaPaths.js";
 import { SchemaTypes } from "mongoose";
+import path from "path"
 const generateServiceSchema = (mongoose) => {
   const { Schema } = mongoose;
   const servicesSchema = new Schema({
@@ -28,7 +29,7 @@ const generateServiceSchema = (mongoose) => {
     }
   });
   servicesSchema.statics.getAllowedProperties = () => {
-    return generatePaths({ paths: this.schema.paths, mongoose });
+    return generatePaths({ paths: path.dirname, mongoose });
   };
 
   servicesSchema.plugin(mongooseTimeStamp);

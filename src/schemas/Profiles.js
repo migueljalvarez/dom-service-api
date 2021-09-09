@@ -2,6 +2,7 @@ import mongooseTimeStamp from "mongoose-timestamp";
 import mongoDelete from "mongoose-delete";
 import mongoosePaginate from "mongoose-paginate-v2";
 import generatePaths from "./helpers/generateSchemaPaths.js";
+import path from "path";
 import { SchemaTypes } from "mongoose";
 const generateProfileSchema = (mongoose) => {
   const { Schema } = mongoose;
@@ -18,6 +19,18 @@ const generateProfileSchema = (mongoose) => {
       type: String,
       required: false,
     },
+    phone: {
+      type: String,
+      required: false,
+    },
+    address: {
+      type: String,
+      required: false,
+    },
+    experience: {
+      type: String,
+      required: false,
+    },
     documentType: {
       type: String,
       enum: ["CC", "CE", "PEP", "PA", "OTHER"],
@@ -27,13 +40,19 @@ const generateProfileSchema = (mongoose) => {
       type: Number,
       required: true,
     },
+    userType: {
+      type: String,
+      enum: ["ADMIN", "USER"],
+      required: true,
+      default: "USER",
+    },
     user: {
-      type: SchemaTypes.ObjectId, 
-      ref: "Users"
-    }
+      type: SchemaTypes.ObjectId,
+      ref: "Users",
+    },
   });
   profileSchema.statics.getAllowedProperties = () => {
-    return generatePaths({ paths: this.schema.paths, mongoose });
+    return generatePaths({ paths: path.dirname, mongoose });
   };
 
   profileSchema.plugin(mongooseTimeStamp);

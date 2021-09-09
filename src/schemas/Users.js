@@ -2,22 +2,24 @@ import mongooseTimeStamp from "mongoose-timestamp";
 import mongoDelete from "mongoose-delete";
 import mongoosePaginate from "mongoose-paginate-v2";
 import generatePaths from "./helpers/generateSchemaPaths.js";
-
+import path from "path"
 const generateUserSchema = (mongoose) => {
   const { Schema } = mongoose;
   const userSchema = new Schema({
     email: {
       type: String,
-      required: true,
       unique: true,
     },
     password: {
       type: String,
-      required: true,
     },
+    uid: {
+      type: String,
+      unique: true,
+    }
   });
   userSchema.statics.getAllowedProperties = () => {
-    return generatePaths({ paths: this.schema.paths, mongoose });
+    return generatePaths({ paths: path.dirname, mongoose });
   };
 
   userSchema.plugin(mongooseTimeStamp);

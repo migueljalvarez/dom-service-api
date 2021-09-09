@@ -2,6 +2,7 @@ import mongooseTimeStamp from "mongoose-timestamp";
 import mongoDelete from "mongoose-delete";
 import mongoosePaginate from "mongoose-paginate-v2";
 import generatePaths from "./helpers/generateSchemaPaths.js";
+import path from "path"
 const generateCategorySchema = (mongoose) => {
   const { Schema } = mongoose;
   const categorySchema = new Schema({
@@ -12,7 +13,7 @@ const generateCategorySchema = (mongoose) => {
     },
   });
   categorySchema.statics.getAllowedProperties = () => {
-    return generatePaths({ paths: this.schema.paths, mongoose });
+    return generatePaths({ paths: path.dirname, mongoose });
   };
 
   categorySchema.plugin(mongooseTimeStamp);
