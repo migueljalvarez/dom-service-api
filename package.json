@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "npm run clean && npm run build-babel", 
+    "build": "npm run clean && npm run build-babel",
     "start": "npm run build && node ./build/index.js",
     "dev": "DEBUG=yes nodemon --ignore '*.test.js'   --exec babel-node ./src/index",
     "build-babel": "babel -d ./build ./src -s",
@@ -17,7 +17,10 @@
     "@babel/core": "^7.15.5",
     "@babel/preset-env": "^7.15.4",
     "express": "^4.17.1",
-    "mongoose": "^6.0.5"
+    "mongoose": "^6.0.5",
+    "mongoose-delete": "^0.5.4",
+    "mongoose-paginate-v2": "^1.4.2",
+    "mongoose-timestamp": "^0.6.0"
   },
   "devDependencies": {
     "@babel/node": "^7.15.4",
