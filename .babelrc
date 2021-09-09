@@ -1,6 +1,13 @@
-{ 
-  "presets": ["@babel/preset-env"], 
+{
+  "presets": [
+    "@babel/preset-env"
+  ],
   "targets": {
-    "node": "12.13"
-  }
+    "node": "12.13",
+    "esmodules": true
+  },
+  "sourceMaps": false,
+  "plugins": [
+    "@babel/plugin-proposal-class-properties"
+  ]
 }

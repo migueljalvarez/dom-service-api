@@ -1,4 +1,4 @@
-import { categoryModel as category } from "../models/categories";
+import category from "../models/categories";
 import AplicationError from "../utils/AplicationError";
 import { pick, omit } from "lodash";
 
@@ -16,7 +16,6 @@ const findAll = async ({
   all = false,
   ...criteria
 } = {}) => {
-
   const document = await category.paginate(
     { ...pick(criteria, category.getAllowedProperties()) },
     {
