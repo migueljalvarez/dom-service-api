@@ -1,9 +1,18 @@
-import { userModel as user } from "../models/users";
+import user from "../models/users";
+import profile from "../models/profiles";
 import AplicationError from "../utils/AplicationError";
 import { pick, omit } from "lodash";
+import bcrypt from "bcryptjs";
+
+
+
+
+
 
 const create = async (data) => {
-  const document = await user.create(data);
+  const passwordHash = bcrypt.hashSync(data.password, 10);
+  const document = await user.create({ ...data, password: passwordHash });
+  await profile.create({ ...data.Profiles, user: document._id });
   return document;
 };
 
@@ -16,7 +25,6 @@ const findAll = async ({
   all = false,
   ...criteria
 } = {}) => {
-
   const document = await user.paginate(
     { ...pick(criteria, user.getAllowedProperties()) },
     {
@@ -105,6 +113,35 @@ const deleteOne = async (id, { hardDelete = false } = {}) => {
   return response;
 };
 
+const customFindOne = async ({
+  withDeleted = false,
+  onlyDeleted = false,
+  ...criteria
+} = {}) => {
+  let document;
+  if (withDeleted) {
+    document = await user.findOneWithDeleted({
+      ...pick(criteria, user.getAllowedProperties()),
+    });
+  } else if (onlyDeleted) {
+    document = await user.findOneDeleted({
+      ...pick(criteria, user.getAllowedProperties()),
+    });
+  } else {
+    document = await user.findOne({
+      ...pick(criteria, user.getAllowedProperties()),
+    });
+  }
+  if (!document) {
+    throw new AplicationError(
+      `user  with id: ${id} has removed o disabled`,
+      404
+    );
+  } else {
+    return document;
+  }
+};
+
 const restore = async (id) => {
   const document = await find(id, { onlyDeleted: true });
   let response = null;
@@ -119,5 +156,5 @@ const restore = async (id) => {
   return response;
 };
 
-const User = { create, findAll, find, patch, deleteOne, restore };
+const User = { create, findAll, find, patch, deleteOne, restore, customFindOne };
 export default User;

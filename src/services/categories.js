@@ -1,9 +1,9 @@
-import category from "../models/categories";
+import CategoryModel from "../models/categories";
 import AplicationError from "../utils/AplicationError";
 import { pick, omit } from "lodash";
 
 const create = async (data) => {
-  const document = await category.create(data);
+  const document = await CategoryModel.create(data);
   return document;
 };
 
@@ -16,8 +16,8 @@ const findAll = async ({
   all = false,
   ...criteria
 } = {}) => {
-  const document = await category.paginate(
-    { ...pick(criteria, category.getAllowedProperties()) },
+  const document = await CategoryModel.paginate(
+    { ...pick(criteria, CategoryModel.getAllowedProperties()) },
     {
       offset,
       limit: all ? 99999999 : limit,
@@ -43,24 +43,24 @@ const find = async (
 ) => {
   let document;
   if (withDeleted) {
-    document = await category.findOneWithDeleted({
+    document = await CategoryModel.findOneWithDeleted({
       _id: id,
-      ...pick(criteria, category.getAllowedProperties()),
+      ...pick(criteria, CategoryModel.getAllowedProperties()),
     });
   } else if (onlyDeleted) {
-    document = await category.findOneDeleted({
+    document = await CategoryModel.findOneDeleted({
       _id: id,
-      ...pick(criteria, category.getAllowedProperties()),
+      ...pick(criteria, CategoryModel.getAllowedProperties()),
     });
   } else {
-    document = await category.findOne({
+    document = await CategoryModel.findOne({
       _id: id,
-      ...pick(criteria, category.getAllowedProperties()),
+      ...pick(criteria, CategoryModel.getAllowedProperties()),
     });
   }
   if (!document) {
     throw new AplicationError(
-      `category  with id: ${id} has removed o disabled`,
+      `CategoryModel  with id: ${id} has removed o disabled`,
       404
     );
   } else {
@@ -69,7 +69,7 @@ const find = async (
 };
 
 const patch = async (id, fields = {}) => {
-  const document = await category.findOneAndUpdate(
+  const document = await CategoryModel.findOneAndUpdate(
     { _id: id },
     omit(fields, ["_id"]),
     {

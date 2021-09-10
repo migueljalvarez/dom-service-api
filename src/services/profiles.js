@@ -1,4 +1,4 @@
-import { profileModel as profile } from "../models/profiles";
+import profile from "../models/profiles";
 import AplicationError from "../utils/AplicationError";
 import { pick, omit } from "lodash";
 
@@ -16,7 +16,6 @@ const findAll = async ({
   all = false,
   ...criteria
 } = {}) => {
-
   const document = await profile.paginate(
     { ...pick(criteria, profile.getAllowedProperties()) },
     {
@@ -68,7 +67,34 @@ const find = async (
     return document;
   }
 };
-
+const customFindOne = async ({
+  withDeleted = false,
+  onlyDeleted = false,
+  ...criteria
+} = {}) => {
+  let document;
+  if (withDeleted) {
+    document = await profile.findOneWithDeleted({
+      ...pick(criteria, profile.getAllowedProperties()),
+    });
+  } else if (onlyDeleted) {
+    document = await profile.findOneDeleted({
+      ...pick(criteria, profile.getAllowedProperties()),
+    });
+  } else {
+    document = await profile.findOne({
+      ...pick(criteria, profile.getAllowedProperties()),
+    });
+  }
+  if (!document) {
+    throw new AplicationError(
+      `profile  with id: ${id} has removed o disabled`,
+      404
+    );
+  } else {
+    return document;
+  }
+};
 const patch = async (id, fields = {}) => {
   const document = await profile.findOneAndUpdate(
     { _id: id },
@@ -119,5 +145,5 @@ const restore = async (id) => {
   return response;
 };
 
-const Prfile = { create, findAll, find, patch, deleteOne, restore };
+const Prfile = { create, findAll, find, patch, deleteOne, restore, customFindOne};
 export default Prfile;
